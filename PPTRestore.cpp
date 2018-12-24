@@ -1,7 +1,9 @@
 #include "PPTRestoreClassHead.h"
+
+
 int main()
 {
-	const string testName = "ppt1.jpg";
+	const string testName = "5.jpg";
 	PPTRestore ppt;
 	ppt.imageRestoreAndEnhance(testName);
 	waitKey();
