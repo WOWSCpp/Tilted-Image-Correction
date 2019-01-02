@@ -1,7 +1,7 @@
 #include "PPTRestoreClassHead.h"
 int main()
 {
-	const string testName = "8.jpg";
+	const string testName = "1.jpg";
 	PPTRestore ppt;
 	//ppt.public_api(testName);
 	Mat src = imread(testName, 1);

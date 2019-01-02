@@ -22,6 +22,7 @@ public:
 	template<template<class, class...> class ContainerType, class ValueType, class... Args>
 	void print(const ContainerType<ValueType, Args...>& c)
 	{
+		if (PLATFORM == "WIN32")
 		for (const auto& v : c)
 		{
 			cout << v << endl;
@@ -31,6 +32,7 @@ public:
 	template<template<class, class, class> class ContainerType, class ValueType, class Cmp>
 	void print(ContainerType<ValueType, vector<ValueType>, Cmp> q)
 	{
+		if (PLATFORM == "WIN32")
 		while (!q.empty())
 		{
 			auto p = q.top();
@@ -45,6 +47,7 @@ public:
 
 	void show_img(const string& windowName, const Mat& src, bool show = true)
 	{
+		if (PLATFORM == "WIN32")
 		if (show) imshow(windowName, src);
 	}
 };
@@ -370,6 +373,7 @@ vector<vector<Point2f>> PPTRestore::Ximpl::divide_points_into_4_parts(const vect
 
 Mat PPTRestore::Ximpl::perspective_transformation(const vector<Point2f>& final_points, Mat& src)
 {
+	debug->print(final_points);
 	Point2f _srcTriangle[4];
 	Point2f _dstTriangle[4];
 	vector<Point2f>srcTriangle(_srcTriangle, _srcTriangle + 4);
@@ -424,18 +428,20 @@ Mat PPTRestore::Ximpl::image_enhance(Mat& input)
 
 vector<Point2f> PPTRestore::get_points(Mat& image)
 {
-	auto after_preprocess = this->pImpl->preprocess_image(image);
+	this->pImpl->srcImage = image;
+	auto after_preprocess = this->pImpl->preprocess_image(this->pImpl->srcImage);
 	auto corners = this->pImpl->corner_dectection(after_preprocess);
 	auto lines = this->pImpl->edge_detection(this->pImpl->srcImage);
 	auto points_with_ratio = this->pImpl->find_cross_points_by_edges(lines);
 	auto final_points = this->pImpl->edge_corner_candidates(points_with_ratio, corners);
-
+	get_image(image, final_points);
 	return final_points;
 }
 
-Mat PPTRestore::get_image(Mat image, vector<Point2f> points)
+Mat PPTRestore::get_image(Mat& image, const vector<Point2f>& points)
 {
 	auto after_transform = this->pImpl->perspective_transformation(points, image);
 	auto final_mat = this->pImpl->image_enhance(after_transform);
 	return final_mat;
 }
+
