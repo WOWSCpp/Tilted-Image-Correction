@@ -74,7 +74,7 @@ private:
 	enum class state;
 };
 
-
+PPTRestore p;
 
 struct PPTRestore::Ximpl
 {
@@ -122,6 +122,8 @@ void PPTRestore::Ximpl::loadImage(const string& name)
 	{
 		cout << "¶ÁÈ¡Í¼Æ¬´íÎó£¬ÇëÈ·¶¨Ä¿Â¼ÏÂÊÇ·ñÓÐimreadº¯ÊýÖ¸¶¨µÄÍ¼Æ¬´æÔÚ" << endl;
 	}
+
+	p.tempImg["raw"] = srcImage;
 	debug->show_img(WINDOW_NAME1, this->srcImage);
 }
 
@@ -135,7 +137,7 @@ Mat PPTRestore::Ximpl::preprocess_image(Mat& src)
 	auto kernel = getStructuringElement(MORPH_RECT, Size(25, 25));
 	dilate(after_gaus, res, kernel);
 	debug->show_img(source_window, res);
-
+	
 	return res;
 }
 
@@ -167,7 +169,7 @@ vector<Point2f> PPTRestore::Ximpl::corner_dectection(Mat& src)
 	}
 
 	debug->show_img(source_window, tmp);
-
+	p.tempImg["corner"] = tmp;
 	return corners;
 }
 
@@ -217,6 +219,7 @@ vector<Vec4i> PPTRestore::Ximpl::edge_detection(Mat& src)
 	}
 
 	debug->show_img("¡¾±ßÔµÌáÈ¡Ð§¹ûÍ¼¡¿", edgeDetect);
+	p.tempImg["edge"] = edgeDetect;
 	return lines;
 }
 
@@ -288,7 +291,7 @@ vector<Point2f> PPTRestore::Ximpl::edge_corner_candidates(const map<double, Vec4
 	}
 	string win = "4_nodes";
 	debug->show_img(win, show_corner_Mat);
-
+	p.tempImg["together"] = show_corner_Mat;
 	//transform the nodes in the ratio_2points int vector<Point2f>
 	vector<Point2f> line_nodes;
 	for (auto p : ratio_2points)
@@ -325,6 +328,7 @@ vector<Point2f> PPTRestore::Ximpl::cal_final_points(const vector<Point2f>& line_
 
 Point2f& PPTRestore::Ximpl::find_closest_points(const vector<Point2f>& line_nodes, const vector<Point2f>& corner_nodes)
 {
+	
 	if (line_nodes.size() == 1) return const_cast<Point2f&>(line_nodes[0]);
 	double min_dis = DBL_MAX;
 	int position = 0;
@@ -423,6 +427,7 @@ Mat PPTRestore::Ximpl::image_enhance(Mat& input)
 	Mat output;
 	Mat kernel = (Mat_<float>(3, 3) << 0, -1, 0, -1, 5, -1, 0, -1, 0);
 	filter2D(input, output, this->srcImage.depth(), kernel);
+	p.tempImg["final"] = output;
 	return output;
 }
 
