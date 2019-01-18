@@ -697,6 +697,7 @@ Mat PPTRestore::Ximpl::image_enhance(Mat& input)
 vector<Point2f> PPTRestore::get_points(Mat& image)
 {
 	PPTRestore::tempImg["raw"] = image;
+	pImpl->hull_points.clear();
 	this->pImpl->srcImage = image;
 	auto after_preprocess = this->pImpl->preprocess_image(image);
 
