@@ -31,7 +31,7 @@ public:
 	~PPTRestore();
 	void public_api(const string& name);
 	vector<Point2f> get_points(Mat&);
-	Mat get_image(Mat& image, const vector<Point2f>& points);
+	Mat get_image(Mat& image, vector<Point2f>& points);
 	unordered_map<string, Mat> get_all_images() const { return tempImg; }
 
 private:
