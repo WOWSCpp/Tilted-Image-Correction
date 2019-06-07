@@ -1,5 +1,4 @@
 #include "Img_Utility.h"
-
 double Utility::angle(Point2f pt1, Point2f pt2, Point2f pt0)
 {
 	double dx1 = pt1.x - pt0.x;
