@@ -5,6 +5,7 @@
 #include<vector>
 using namespace std;
 const int Num = 9;
+
 /*****************************以下为线性表类模板定义***************************************/
 template<typename Type> class TList;           //线性表类模板声明
 template<typename Type> class TNode            //线性表结点类模板定义
