@@ -27,8 +27,8 @@ int main() {
 	n.eval_input_tokens("(function fib (n) (if (< n 2) n (+ (fib (- n 1)) (fib (- n 2)))))") ;
 	n.eval_input_tokens("(fib 15)")->int_value ;
 	n.eval_input_tokens("(def a (list 1 2 3)) (nth_element 0 a)")->int_value ;
-	Matrix3D<double> m1(150, 150, 150);
-	Matrix3D<double> m2(150, 150, 150);
+	Matrix3D<double> m1(140, 140, 140);
+	Matrix3D<double> m2(140, 140, 140);
 	auto m3 = m1 + m2;
     return 0;
 }
